@@ -9,9 +9,4 @@ builder.Services.AddDbContext<TimeReservationContext>(options =>
 });
 ```
 
-DESKTOP-AVK98P9 
-نام 
-server name
-شما در برنامه 
-sql server management studio
-است.
+DESKTOP-AVK98P9 is server name in SQL server management studio
