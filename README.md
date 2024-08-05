@@ -10,3 +10,7 @@ builder.Services.AddDbContext<TimeReservationContext>(options =>
 ```
 
 DESKTOP-AVK98P9 is server name in SQL server management studio
+
+پروژه رو که باز کردید پوشه migrations رو پاک کنید بعد در قسمت Package Manager Console یک migrations ایجاد کنید 
+مثلا : Add-Migration init
+سپس دستور Update-Database رو اجرا کنید.
