@@ -8,4 +8,9 @@ builder.Services.AddDbContext<TimeReservationContext>(options =>
     options.UseSqlServer("Data Source =DESKTOP-AVK98P9;Initial Catalog=TimeReservationDB;Integrated Security=true;Trust Server Certificate=true");
 });
 
-DESKTOP-AVK98P9 نام server name شما در برنامه SQL SERVER MANAGEMENT STUDIO است.
+DESKTOP-AVK98P9 
+نام 
+server name
+شما در برنامه 
+sql server management studio
+است.
