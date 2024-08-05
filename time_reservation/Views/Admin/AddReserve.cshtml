@@ -1,0 +1,90 @@
+﻿@model time_reservation.Models.AddTTimeViewModel
+
+ 
+
+<style>
+   
+    .custom-select {
+        background-color: #f8f9fa;  
+        border: 1px solid #ced4da; 
+        border-radius: 4px;  
+        padding: 10px 15px;  
+        font-size: 16px;  
+        color: #495057;  
+        transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+    }
+
+       
+        .custom-select:focus {
+            border-color: #80bdff;  
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
+            outline: none;  
+        }
+
+    
+        .custom-select option {
+            padding: 10px;  
+            background-color: #ffffff;  
+            color: #495057;  
+        }
+
+ 
+    .control-label {
+        font-weight: bold;  
+        margin-bottom: 10px; 
+        display: block;  
+    }
+
+</style>
+
+<h1>AddReserve</h1>
+
+<h4>AddTTimeViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddReserve" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+       
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="selectBusiness" class="control-label">سالن</label>
+                <select id="selectBusiness" class="form-control custom-select" asp-for="SelectBusiness">
+                    @foreach (var item in Model.Admin.Businesses)
+                    {
+                        <option value="@item.id">@item.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ReservationHour" class="control-label"></label>
+                <input asp-for="ReservationHour" type="time" class="form-control" />
+                <span asp-validation-for="ReservationHour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReservationDate" class="control-label"></label>
+                <input asp-for="ReservationDate" type="date" class="form-control" />
+                <span asp-validation-for="ReservationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsPaymentCompleted" /> @Html.DisplayNameFor(model => model.IsPaymentCompleted)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

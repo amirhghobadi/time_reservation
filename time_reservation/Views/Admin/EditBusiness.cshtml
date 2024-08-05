@@ -1,0 +1,396 @@
+﻿@model time_reservation.Models.EditBusinessViewModel
+
+@{
+    ViewData["Title"] = "EditBusiness";
+    ViewBag.ShowNavbar = false;
+    var possibilitiesList = new List<string> { "پارکینگ", "بوفه", "سرویس بهداشتی",
+        "رختکن", "جایگاه تماشاچی","فروشگاه","آب سردکن","تهویه هوا","سیستم سرمایش",
+        "سیستم گرمایش","فضای سبز","دوش","کمد","ماساژ","مربی","تلمبه" };
+}
+
+
+
+
+<style>
+
+
+
+    .checkbox-wrapper-47 input[type="checkbox"] {
+        display: none;
+        visibility: hidden;
+    }
+
+    .checkbox-wrapper-47 label {
+        position: relative;
+        padding-left: 2em;
+        padding-right: 1em;
+        line-height: 2;
+        cursor: pointer;
+        display: inline-flex;
+        white-space: nowrap;  
+    }
+
+        .checkbox-wrapper-47 label:before {
+            box-sizing: border-box;
+            content: " ";
+            position: absolute;
+            top: 0.3em;
+            left: 0;
+            display: block;
+            width: 1.4em;
+            height: 1.4em;
+            border: 2px solid #ffa600;
+            border-radius: 6px;
+            z-index: -1;
+        }
+
+    .checkbox-wrapper-47 input[type=checkbox]:checked + label {
+        padding-left: 1em;
+        color: #000;
+    }
+
+        .checkbox-wrapper-47 input[type=checkbox]:checked + label:before {
+            top: 0;
+            width: 100%;
+            height: 2em;
+            background: #ffa600;
+            border-color: #ffa600;
+        }
+
+    .checkbox-wrapper-47 label,
+    .checkbox-wrapper-47 label::before {
+        transition: 0.25s all ease;
+    }
+
+</style>
+
+
+
+
+<h1>EditBusiness</h1>
+
+<h4>EditBusinessViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="myForm" asp-action="EditBusiness" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label hidden asp-for="id" class="control-label"></label>
+                <input hidden asp-for="id" class="form-control" />
+                <span asp-validation-for="id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>تصاویر موجود</label>
+             
+                        <div class="img-thumbnail">
+                            <img  src="~/images/admins/@Model.Admin.id/@Model.Name/@Model.PictureFileName" style="max-width: 200px;" />
+                           
+                        </div>
+                
+            </div>
+
+            
+
+            <div class="form-group">
+                <label asp-for="Picture" class="control-label"></label>
+                <input asp-for="Picture" class="form-control" type="file" multiple />
+                <span asp-validation-for="Picture" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+
+
+
+            <div class="form-group">
+                <label asp-for="Possibilities" class="control-label">امکانات</label>
+                <div class="d-flex flex-wrap">
+                    @foreach (var possibility in possibilitiesList)
+                    {
+                        <div class="checkbox-wrapper-47 m-2">
+                            <input type="checkbox" class="possibility-checkbox" id="@possibility" value="@possibility" @(Model.Possibilities != null && Model.Possibilities.Contains(possibility) ? "checked" : "")>
+                            <label for="@possibility">@possibility</label>
+                        </div>
+                    }
+                </div>
+                <input type="hidden" id="PossibilitiesString" name="Possibilities" />
+                <span asp-validation-for="Possibilities" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <select asp-for="Gender" class="form-control">
+                  
+                    <option value="آقایان">آقایان</option>
+                    <option value="بانوان">بانوان</option>
+                    <option value="آقایان و بانوان">آقایان و بانوان</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <select asp-for="City" class="form-control" id="City" name="City">
+                    <option value="">-- لطفا استان را انتخاب کنید --</option>
+                    <option value="البرز">البرز</option>
+                    <option value="اردبیل">اردبیل</option>
+                    <option value="بوشهر">بوشهر</option>
+                    <option value="چهارمحال و بختیاری">چهارمحال و بختیاری</option>
+                    <option value="آذربایجان شرقی">آذربایجان شرقی</option>
+                    <option value="فارس">فارس</option>
+                    <option value="گیلان">گیلان</option>
+                    <option value="گلستان">گلستان</option>
+                    <option value="همدان">همدان</option>
+                    <option value="هرمزگان">هرمزگان</option>
+                    <option value="ایلام">ایلام</option>
+                    <option value="اصفهان">اصفهان</option>
+                    <option value="کرمان">کرمان</option>
+                    <option value="کرمانشاه">کرمانشاه</option>
+                    <option value="خوزستان">خوزستان</option>
+                    <option value="کهگیلویه و بویراحمد">کهگیلویه و بویراحمد</option>
+                    <option value="کردستان">کردستان</option>
+                    <option value="لرستان">لرستان</option>
+                    <option value="مرکزی">مرکزی</option>
+                    <option value="مازندران">مازندران</option>
+                    <option value="خراسان شمالی">خراسان شمالی</option>
+                    <option value="قزوین">قزوین</option>
+                    <option value="قم">قم</option>
+                    <option value="خراسان رضوی">خراسان رضوی</option>
+                    <option value="سمنان">سمنان</option>
+                    <option value="سیستان و بلوچستان">سیستان و بلوچستان</option>
+                    <option value="خراسان جنوبی">خراسان جنوبی</option>
+                    <option value="تهران">تهران</option>
+                    <option value="آذربایجان غربی">آذربایجان غربی</option>
+                    <option value="یزد">یزد</option>
+                    <option value="زنجان">زنجان</option>
+                </select>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SubCity" class="control-label"></label>
+                <select asp-for="SubCity" class="form-control" id="SubCity" name="SubCity">
+                    <option value="">-- لطفا شهرستان را انتخاب کنید --</option>
+            
+                </select>
+                <span asp-validation-for="SubCity" class="text-danger"></span>
+            </div>
+
+
+
+
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeUnit" class="control-label"></label>
+                <input asp-for="TimeUnit" class="form-control" />
+                <span asp-validation-for="TimeUnit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label"></label>
+                <input asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime" class="control-label"></label>
+                <input asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" type="range" min="50000" max="1500000" step="10000" id="priceRange" oninput="updatePriceValue()" value="@Model.Price" />
+                <span id="priceValue" class="form-control" style="margin-top: 10px;">@Model.Price هزار تومان</span>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+ 
+
+
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="State" /> @Html.DisplayNameFor(model => model.State)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            <div class="text-danger" id="error-message" style=" display: none;"></div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function updatePriceValue() {
+            var rangeInput = document.getElementById('priceRange');
+            var priceValue = document.getElementById('priceValue');
+            priceValue.textContent = formatNumber(rangeInput.value) + ' تومان';
+        }
+
+        function formatNumber(number) {
+            return Number(number).toLocaleString('en-US');
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updatePriceValue();  
+        });
+    </script>
+
+
+
+
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+         
+            function updatePossibilitiesString() {
+                const checkboxes = document.querySelectorAll(".possibility-checkbox:checked");
+                const possibilities = Array.from(checkboxes).map(checkbox => checkbox.value);
+                document.getElementById("PossibilitiesString").value = possibilities.join(",");
+            }
+
+         
+            document.querySelectorAll(".possibility-checkbox").forEach(checkbox => {
+                checkbox.addEventListener("change", updatePossibilitiesString);
+            });
+
+         
+            updatePossibilitiesString();
+
+          
+            document.querySelector('form').addEventListener('submit', function(event) {
+                updatePossibilitiesString();
+            });
+        });
+    </script>
+
+
+
+
+    <script>
+        var cities = {
+            "البرز": ["کرج", "ساوجبلاغ", "نظرآباد", "طالقان", "اشتهارد"],
+            "اردبیل": ["اردبیل", "بیله سوار", "پارس آباد", "خلخال", "کوثر", "گِرمی", "مشگین شهر", "نَمین", "نیر"],
+            "بوشهر": ["بوشهر", "تنگستان", "جم", "دشتستان", "دشتی", "دیر", "دیلم", "عسلویه", "کنگان", "گناوه"],
+            "چهارمحال و بختیاری": ["اردل", "بروجن", "سامان", "شهرکرد", "فارسان", "کوهرنگ", "کیار", "لردگان"],
+            "آذربایجان شرقی": ["آذرشهر", "اسکو", "اهر", "بستان آباد", "بناب", "تبریز", "جلفا", "چاراویماق", "سراب", "شبستر", "عجب شیر", "کلیبر", "مراغه", "مرند", "ملکان", "میانه", "ورزقان", "هریس", "هشترود"],
+            "فارس": ["آباده", "ارسنجان", "استهبان", "اقلید", "بوانات", "پاسارگاد", "جهرم", "خرم بید", "خنج", "داراب", "زرین دشت", "سپیدان", "شیراز", "فراشبند", "فسا", "فیروزآباد", "قیر و کارزین", "کازرون", "لارستان", "لامرد", "مرودشت", "ممسنی", "مهر", "نی ریز"],
+            "گیلان": ["آستارا", "آستانه اشرفیه", "املش", "بندر انزلی", "رشت", "رضوانشهر", "رودبار", "رودسر", "سیاهکل", "شفت", "صومعه سرا", "طوالش", "فومن", "لاهیجان", "لنگرود", "ماسال"],
+            "گلستان": ["آزادشهر", "آق قلا", "بندر گز", "ترکمن", "رامیان", "علی آباد", "کردکوی", "کلاله", "گرگان", "گنبد کاووس", "مراوه تپه", "مینودشت"],
+            "همدان": ["اسدآباد", "بهار", "تویسرکان", "رزن", "فامنین", "کبودرآهنگ", "ملایر", "نهاوند", "همدان"],
+            "هرمزگان": ["ابوموسی", "بستک", "بندر عباس", "بندر لنگه", "پارسیان", "جاسک", "حاجی آباد", "خمیر", "رودان", "سیریک", "قشم", "میناب"],
+            "ایلام": ["آبدانان", "ایلام", "ایوان", "بدره", "چرداول", "دره شهر", "دهلران", "سیروان", "ملکشاهی", "مهران"],
+            "اصفهان": ["آران و بیدگل", "اردستان", "اصفهان", "برخوار", "بوئین و میاندشت", "تیران و کرون", "چادگان", "خمینی شهر", "خوانسار", "سمیرم", "شاهین شهر و میمه", "شهرضا", "دهاقان", "فریدن", "فریدونشهر", "فلاورجان", "کاشان", "گلپایگان", "لنجان", "مبارکه", "نائین", "نجف آباد", "نطنز"],
+            "کرمان": ["ارزوئیه", "انار", "بافت", "بردسیر", "بم", "جیرفت", "رابر", "راور", "رفسنجان", "رودبار جنوب", "ریگان", "زرند", "سیرجان", "شهربابک", "عنبرآباد", "فاریاب", "فهرج", "قلعه گنج", "کرمان", "کوهبنان", "کهنوج", "منوجان"],
+            "کرمانشاه": ["اسلام آباد غرب", "پاوه", "ثلاث باباجانی", "جوانرود", "دالاهو", "روانسر", "سرپل ذهاب", "سنقر", "صحنه", "قصر شیرین", "کرمانشاه", "کنگاور", "گیلانغرب", "هرسین"],
+            "خوزستان": ["آبادان", "امیدیه", "اندیمشک", "اهواز", "ایذه", "باغ ملک", "باوی", "بهبهان", "حمیدیه", "خرمشهر", "دزفول", "دشت آزادگان", "رامشیر", "رامهرمز", "شادگان", "شوش", "شوشتر", "گتوند", "لالی", "ماهشهر", "مسجدسلیمان", "هفتکل", "هندیجان"],
+            "کهگیلویه و بویراحمد": ["باشت", "بویراحمد", "بهمئی", "چرام", "دنا", "کهگیلویه", "گچساران", "لنده"],
+            "کردستان": ["بانه", "بیجار", "دهگلان", "دیواندره", "سروآباد", "سقز", "سنندج", "قروه", "کامیاران", "مریوان"],
+            "لرستان": ["ازنا", "الیگودرز", "بروجرد", "پل‌دختر", "خرم‌آباد", "دلفان", "دورود", "دوره", "سلسله", "کوهدشت"],
+            "مرکزی": ["آشتیان", "اراک", "تفرش", "خمین", "خنداب", "دلیجان", "زرندیه", "ساوه", "شازند", "کمیجان", "محلات"],
+            "مازندران": ["آمل", "بابل", "بابلسر", "بهشهر", "تنکابن", "جویبار", "چالوس", "رامسر", "ساری", "سوادکوه", "عباس آباد", "فریدونکنار", "قایم‌شهر", "گلوگاه", "محمودآباد", "میاندورود", "نکا", "نور", "نوشهر"],
+            "خراسان شمالی": ["آشخانه", "اسفراین", "بجنورد", "جاجرم", "شیروان", "فاروج", "گرمه", "مانه و سملقان"],
+            "قزوین": ["آبیک", "آوج", "البرز", "بوئین زهرا", "تاکستان", "قزوین"],
+            "قم": ["قم"],
+            "خراسان رضوی": ["بجستان", "بردسکن", "تایباد", "تربت جام", "تربت حیدریه", "چناران", "خلیل آباد", "خواف", "درگز", "رشتخوار", "سبزوار", "سرخس", "فریمان", "فیروزه", "قوچان", "کاشمر", "کلات", "گناباد", "مشهد", "مه ولات", "نیشابور"],
+            "سمنان": ["آرادان", "دامغان", "سمنان", "سرخه", "شاهرود", "گرمسار", "مهدی‌شهر", "میامی"],
+            "سیستان و بلوچستان": ["ایرانشهر", "چابهار", "خاش", "دلگان", "زابل", "زاهدان", "زهک", "سراوان", "سرباز", "سیب و سوران", "فنوج", "قصرقند", "کنارک", "مهرستان", "میرجاوه", "نیک‌شهر", "نیمروز", "هامون", "هیرمند"],
+            "خراسان جنوبی": ["بشرویه", "بیرجند", "درمیان", "زیرکوه", "سرایان", "سربیشه", "فردوس", "قاین", "نهبندان"],
+            "تهران": ["اسلامشهر", "پاکدشت", "پردیس", "پیشوا", "تهران", "دماوند", "رباطکریم", "رودهن", "ری", "شمیرانات", "شهریار", "فیروزکوه", "قدس", "قرچک", "ملارد", "ورامین"],
+            "آذربایجان غربی": ["ارومیه", "اشنویه", "بوکان", "پلدشت", "پیرانشهر", "تکاب", "چالدران", "خوی", "سردشت", "سلماس", "شاهین دژ", "شوط", "ماکو", "مهاباد", "میاندوآب", "نقده"],
+            "یزد": ["ابرکوه", "اردکان", "اشکذر", "بافق", "بهاباد", "تفت", "خاتم", "مهریز", "میبد", "یزد"],
+            "زنجان": ["ابهر", "ایجرود", "خدابنده", "خرمدره", "زنجان", "سلطانیه", "طارم", "ماهنشان"]
+        };
+
+        $(document).ready(function () {
+           
+            function loadSubCities() {
+                var selectedCity = $('#City').val();
+                var subCitySelect = $('#SubCity');
+                var selectedSubCity = '@Model.SubCity';
+
+                subCitySelect.empty();  
+
+                if (selectedCity) {
+                    var subCities = cities[selectedCity];
+
+                    if (subCities) {
+                   
+                        subCitySelect.append($('<option></option>').attr('value', '').text('-- شهرستان را انتخاب کنید --'));
+ 
+                        var filteredSubCities = subCities.filter(city => city !== selectedSubCity);
+
+                       
+                        if (selectedSubCity && subCities.includes(selectedSubCity)) {
+                            subCitySelect.append($('<option></option>').attr('value', selectedSubCity).text(selectedSubCity).prop('selected', true));
+                        }
+ 
+                        $.each(filteredSubCities, function (index, value) {
+                            subCitySelect.append($('<option></option>').attr('value', value).text(value));
+                        });
+                    }
+                } else {
+              
+                    subCitySelect.append($('<option></option>').attr('value', '').text('-- شهرستان را انتخاب کنید --'));
+                }
+            }
+
+       
+            $('#City').change(function () {
+                loadSubCities();
+            });
+
+        
+            loadSubCities();
+
+        
+            $('#myForm').submit(function (event) {
+                var selectedSubCity = $('#SubCity').val();
+                if (!selectedSubCity) {
+                  
+                    $('#error-message').text('لطفا شهرستان را انتخاب کنید').show();
+                 
+                    event.preventDefault();
+                }
+            });
+        });
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+}

@@ -1,0 +1,257 @@
+﻿@using time_reservation.Helper
+
+
+@model time_reservation.Models.MemberProfileViewModel
+
+@{
+    ViewData["Title"] = "MemberProfile";
+}
+
+@{
+    Func<TimeSpan, int, TimeSpan> CalculateEndTime = (TimeSpan startTime, int durationMinutes) =>
+    {
+               return startTime.Add(TimeSpan.FromMinutes(durationMinutes));
+    
+    };
+}
+
+
+<style>
+
+ 
+        .nav-tabs-vertical {
+            border-bottom: none;
+            border-right: 1px solid #dee2e6;
+        }
+        .nav-tabs-vertical .nav-link {
+            border: 1px solid transparent;
+            border-right: 0;
+            border-radius: 0.25rem 0 0 0.25rem;
+            padding: 0.5rem 1rem; 
+            font-size: 0.875rem;  
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        .nav-tabs-vertical .nav-link.active {
+            border-color: #dee2e6 #dee2e6 #dee2e6 #fff;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        .nav-tabs-vertical .nav-link:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+            border-color: #dee2e6 #dee2e6 #dee2e6 #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+    
+        @@media (max-width: 767.98px) {
+            .nav-tabs-vertical {
+                border-right: none;
+                border-bottom: 1px solid #dee2e6;
+            }
+            .nav-tabs-vertical .nav-link {
+                border-right: 1px solid #dee2e6;
+                border-radius: 0;
+                padding: 0.5rem 1rem;  
+                font-size: 0.875rem;  
+            }
+        
+            .nav-tabs-vertical.collapse {
+                display: none;
+            }
+        }
+
+ 
+    .table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    min-width: 800px;  
+}
+
+.table th, .table td {
+    white-space: nowrap;
+    
+}
+
+</style>
+
+
+
+
+
+ <div class="row my-4">
+        <div class="col-md-3 col-12 my-4">
+            <ul class="nav nav-tabs nav-tabs-vertical flex-md-column" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true"> مشخصات</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">تغییر کلمه عبور </a>
+                </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab3-tab" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">سالن های رزرو شده</a>
+            </li>
+              
+            </ul>
+        </div>
+        <div class="col-md-9 col-12">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+
+
+
+
+
+
+
+                <h4 class="mb-4">ویرایش مشخصات کاربر</h4>
+                <form asp-action="EditMember" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="@Model.Member.id" />
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.Member.FullName">نام و نام خانوادگی</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" asp-for="@Model.Member.FullName" />
+                            <span asp-validation-for="@Model.Member.FullName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.Member.Email">ایمیل</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control" asp-for="@Model.Member.Email" />
+                            <span asp-validation-for="@Model.Member.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.Member.Phone">تلفن</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" asp-for="@Model.Member.Phone" />
+                            <span asp-validation-for="@Model.Member.Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-8 offset-sm-4">
+                            <button type="submit" class="btn btn-primary">ویرایش</button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+                </div>
+
+
+
+                <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+
+
+
+
+                    <form asp-action="ChangePassword" method="post">
+                    <input type="hidden" asp-for="@Model.ChangePasswordViewModel.id" />
+                        <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.ChangePasswordViewModel.CurrentPassword"></label>
+                            <div class="col-sm-8">
+                            <input type="text" class="form-control" asp-for="@Model.ChangePasswordViewModel.CurrentPassword" />
+                            <span asp-validation-for="@Model.ChangePasswordViewModel.CurrentPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.ChangePasswordViewModel.NewPassword">  </label>
+                        <div class="col-sm-8">
+                            <input asp-for="@Model.ChangePasswordViewModel.NewPassword" type="password" class="form-control" />
+                            <span asp-validation-for="@Model.ChangePasswordViewModel.NewPassword" class="text-danger"></span>
+                       </div>
+                        
+                 </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="ChangePasswordViewModel.ConfirmNewPassword">   </label>
+                        <div class="col-sm-8">
+                            <input asp-for="ChangePasswordViewModel.ConfirmNewPassword" type="password" class="form-control" />
+                            <span asp-validation-for="ChangePasswordViewModel.ConfirmNewPassword" class="text-danger"></span>
+                        </div>
+                      
+                    </div> 
+
+                    <button type="submit" class="btn btn-primary">تغییر کلمه عبور</button>
+                </form>
+
+             
+
+
+
+                </div>
+
+                <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+
+
+                <h4>رزروهای انجام شده</h4>
+                @if (Model.Member.TTime != null && Model.Member.TTime.Count > 0)
+                {
+                    <div class="table-responsive my-4">
+                        <table class="table text-light">
+                            <thead>
+                                <tr>
+                                    <th>سالن</th>
+                                 
+                                    <th>آدرس</th>
+                                    <th>ساعت</th>
+                                  
+                                    <th>تاریخ</th>
+                                    <th>وضعیت پرداخت</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var reservation in Model.Member.TTime)
+                                {
+                                    <tr>
+                                        <td>@reservation.BusinessName</td>
+                                       
+                                        <td>@reservation.BusinessAddress</td>
+                                        <td>
+                                            @reservation.ReservationHour.ToString(@"hh\:mm")
+                                            تا
+                                            @CalculateEndTime(reservation.ReservationHour, reservation.Business.TimeUnit).ToString(@"hh\:mm")
+
+                                        </td>
+                                      
+                                        <td>@PersianDateHelper.ToPersianDateString(reservation.ReservationDate)</td>
+                                        <td>@(reservation.IsPaymentCompleted ? "پرداخت شده" : "در انتظار پرداخت")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p>رزروی انجام نشده است.</p>
+                }
+
+
+
+
+                </div>
+        
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

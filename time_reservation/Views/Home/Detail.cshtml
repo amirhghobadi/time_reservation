@@ -1,0 +1,516 @@
+@using System.Security.Claims
+@using System.Text.Json
+@model Business
+
+@{
+
+    var ttimes = ViewBag.TTimes as List<time_reservation.Models.TTime>;
+
+
+    var phone = ViewBag.Admin as string ;
+
+
+ 
+ 
+    var persianDates = ViewBag.PersianDates as List<string>;
+
+ 
+
+
+}
+
+
+
+<style>
+
+
+    .badge {
+        border-radius: 12px;
+        font-size: 14px;
+    }
+
+    .badge-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+    }
+
+ 
+
+    .line-height-custom {
+        line-height: 1.8;  
+    }
+
+
+
+
+
+
+
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 2px;
+   
+        text-align: center;
+    }
+
+    th {
+        background-color: #343a40;
+    }
+
+    td {
+        position: relative;
+        background-color: #343a40;
+    }
+
+        td .reservation {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            line-height: 30px; 
+            color: #fff; 
+            background-color: transparent; 
+            transition: background-color 0.3s ease;
+        }
+
+        td:hover .reservation {
+            background-color: #ffa600;
+            color: black;
+            cursor: pointer;
+            border-radius:3px;
+           
+        }
+
+    .btn:disabled {
+     
+         display: none;
+    }
+
+
+
+    .past{
+        background-color: #ff0f57;
+       
+    }
+
+   
+
+    .reserved {
+        background-color: #ff0f57; 
+      
+    }
+
+
+
+
+</style>
+
+
+
+<div class="d-flex justify-content-center ">
+
+
+
+    <div class=" col-sm-8 col-md-8 col-lg-7 col-xs-10 my-4 ">
+        <div class="d-flex justify-content-center">
+            <div>
+                <img style="max-height: 40rem;"
+                      src="~/images/admins/@Model.AdminIdB/@Model.Name/@Model.PictureFileName"
+                     class="img-fluid rounded" alt="Responsive image">
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class=" my-4 p-4 border-1 border-white border rounded shadow-lg bg-dark text-white">
+    <div class="bg-primary text-white d-flex justify-content-center py-3 rounded-top">
+        <div>
+            معرفی مجموعه
+        </div>
+    </div>
+    <div class="my-3 h4 text-center">
+        @Model.Name
+    </div>
+    <div class="my-3 text-center line-height-custom">
+        @Model.Description
+    </div>
+    <div class="my-3 text-center">
+        <span class="p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path>
+            </svg>
+            با مدیریت  @Model.OwnerName
+        </span>
+        <span class="text-warning p-2">
+
+            شماره تماس @phone
+        </span>
+    </div>
+  
+    <div class="my-3 text-center">
+         تایم هر سانس @Model.TimeUnit دقیقه
+    </div>
+
+
+    <div class="d-flex flex-wrap my-2">
+         <div>
+            <span class="badge badge-primary p-2 m-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                     height="16" fill="currentColor" class="bi bi-gender-ambiguous" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M11.5 1a.5.5 0 0 1 0-1h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V1.707l-3.45 3.45A4 4 0 0 1 8.5 10.97V13H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V14H6a.5.5 0 0 1 0-1h1.5v-2.03a4 4 0 1 1 3.471-6.648L14.293 1zm-.997 4.346a3 3 0 1 0-5.006 3.309 3 3 0 0 0 5.006-3.31z">
+                    </path>
+                </svg>
+                @Model.Gender
+            </span>
+         </div>
+          <div>
+            <span class="badge badge-primary p-2 m-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                     height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a5.53 5.53 0 0 1 5.5 5.5c0 3.03-5.5 10.5-5.5 10.5S2.5 8.53 2.5 5.5A5.53 5.53 0 0 1 8 0zm0 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                </svg>
+                @Model.SubCity
+            </span>
+         </div>
+          <div>
+            <span class="badge badge-primary p-2 m-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                     height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a5.53 5.53 0 0 1 5.5 5.5c0 3.03-5.5 10.5-5.5 10.5S2.5 8.53 2.5 5.5A5.53 5.53 0 0 1 8 0zm0 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                </svg>
+                @Model.City
+            </span>
+         </div>
+        <div>
+            <span class="badge badge-primary p-1 m-2 text-wrap line-height-custom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                     height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a5.53 5.53 0 0 1 5.5 5.5c0 3.03-5.5 10.5-5.5 10.5S2.5 8.53 2.5 5.5A5.53 5.53 0 0 1 8 0zm0 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                </svg>
+                @Model.Address
+            </span>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="my-3 text-center">
+        <span class="h4 font-weight-bold">
+            @{
+                string formattedPrice = Model.Price?.ToString("N0");
+            }
+            قیمت براس هر سانس <span class=" text-success">
+                @formattedPrice
+            </span> تومان
+        </span>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="m-3 p-2 border-1 border-white border rounded">
+
+    <h5>جدول رزرو</h5>
+
+
+
+
+
+
+        @{
+      
+            var startTime = Model.StartTime;
+            var endTime = Model.EndTime;
+
+            var timeUnit = Model.TimeUnit;
+            var daysOfWeek = new[] { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+            var today = DateTime.Today;
+        }
+
+
+        <div class="d-flex justify-content-between my-2">
+            <div>
+                <button id="prevWeek" class="btn btn-primary">هفته قبل</button>
+            </div>
+            <div>
+                <button id="currentWeek" class="btn btn-primary">امروز</button>
+            </div>
+            <div>
+                <button id="nextWeek" class="btn btn-primary">هفته بعد</button>
+            </div>
+     
+       
+     
+        </div>
+
+    <table id="scheduleTable">
+        <thead>
+            <tr>
+                <th class="text-center">زمان</th>
+                @for (var i = 0; i < 7; i++)
+                {
+                    <th class="text-center"></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (var time = startTime; time < endTime; time = time.Add(new TimeSpan(0, timeUnit, 0)))
+            {
+                <tr>
+                    <td>@time.ToString(@"hh\:mm") - @time.Add(new TimeSpan(0, timeUnit, 0)).ToString(@"hh\:mm")</td>
+                    @for (var j = 0; j < 7; j++)
+                    {
+                        <td><span class="reservation">رزرو</span></td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+    <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">رزرو</h5>
+               
+
+                </div>
+                <div class="modal-body">
+                    <form id="reservationForm" method="post" asp-action="AddTTimeByMember" asp-controller="Account">
+                        <input type="hidden" id="businessId" name="BusinessId" value="@Model.id">
+                        <input type="hidden" id="memberId" name="MemberId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
+                        <input type="hidden" id="reservationHour" name="ReservationHour">
+                        <input type="hidden" id="reservationDate" name="ReservationDate">
+
+                        <div class="mb-3">
+                            <label for="userName" class="form-label">نام</label>
+                            <input  type="text" class="form-control" id="userName" name="UserName" value="@User.Identity.Name" required>
+                        </div>
+
+                        <p id="modalDate">تاریخ: </p>
+                        <p id="modalTime">ساعت: </p>
+
+                        <button type="submit" class="btn btn-primary">ثبت</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+
+
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let currentDate = new Date('@DateTime.Now.ToString("yyyy-MM-dd")');
+            const today = new Date('@DateTime.Today.ToString("yyyy-MM-dd")');
+            const daysOfWeek = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+            const isAuthenticated = '@User.Identity.Name' ? true : false;
+
+          
+
+            const reservedSlots = [
+
+        @foreach (var ttime in ttimes)
+        {
+            <text>{ "date": "@ttime.ReservationDate.ToString("yyyy-MM-dd")", "time": "@ttime.ReservationHour" }, </text>
+        }
+                ];
+
+         
+
+        
+            function formatTime(time) {
+                let [hours, minutes] = time.split(':');
+                return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+            }
+
+            function updateTable(date) {
+                let tableHeaders = document.querySelectorAll('#scheduleTable thead th');
+                let baseDate = new Date(date);
+                baseDate.setDate(baseDate.getDate() - ((baseDate.getDay() + 1) % 7)); 
+
+                for (let i = 1; i < tableHeaders.length; i++) {
+                    let currentDay = new Date(baseDate);
+                    currentDay.setDate(currentDay.getDate() + (i - 1));
+                    tableHeaders[i].innerHTML = `${daysOfWeek[i - 1]}<br />${currentDay.toISOString().split('T')[0]}`;
+                }
+
+                updateCells();
+                updateButtonStates();
+            }
+
+            function updateCells() {
+                let rows = document.querySelectorAll('#scheduleTable tbody tr');
+                let baseDate = new Date(currentDate);
+                baseDate.setDate(baseDate.getDate() - ((baseDate.getDay() + 1) % 7)); 
+
+                rows.forEach(row => {
+                    let timeCell = row.cells[0];
+                    let timeRange = timeCell.innerText.split(' - ');
+                    let startTime = formatTime(timeRange[0].trim());
+
+                    for (let i = 1; i < row.cells.length; i++) {
+                        let currentDay = new Date(baseDate);
+                        currentDay.setDate(currentDay.getDate() + (i - 1));
+                        let cellDate = currentDay.toISOString().split('T')[0];
+                        let cellTime = startTime;
+
+                        let isReserved = reservedSlots.some(slot => slot.date === cellDate && formatTime(slot.time) === cellTime);
+                        let cellDateTime = new Date(cellDate + 'T' + cellTime + ':00');
+
+                        if (cellDateTime < new Date()) {
+                            row.cells[i].classList.add('past');
+                            row.cells[i].querySelector('.reservation').innerText = 'گذشته';
+                            row.cells[i].removeEventListener('click', handleCellClick); 
+                        } else if (isReserved) {
+                            row.cells[i].classList.add('reserved'); 
+                            row.cells[i].querySelector('.reservation').innerText = 'رزرو شده';
+                            row.cells[i].removeEventListener('click', handleCellClick); 
+                        } else {
+                            row.cells[i].classList.remove('past', 'reserved');
+                            row.cells[i].querySelector('.reservation').innerText = 'رزرو';
+                            row.cells[i].addEventListener('click', handleCellClick); 
+                        }
+
+                        row.cells[i].setAttribute('data-date', cellDate);
+                        row.cells[i].setAttribute('data-time', cellTime);
+                    }
+                });
+            }
+
+            function handleCellClick() {
+                if (this.classList.contains('past')) {
+                    return; 
+                }
+
+                if (isAuthenticated) {
+                    let date = this.getAttribute('data-date');
+                    let time = this.getAttribute('data-time');
+
+                    document.getElementById('reservationDate').value = date;
+                    document.getElementById('reservationHour').value = time;
+
+                    document.getElementById('modalDate').innerText = `تاریخ: ${date}`;
+                    document.getElementById('modalTime').innerText = `ساعت: ${time}`;
+
+                    let reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
+                    reservationModal.show();
+                } else {
+                    window.location.href = '/Account/Login';
+                }
+            }
+
+            function updateButtonStates() {
+                const isCurrentWeek = isSameWeek(currentDate, today);
+                document.getElementById('prevWeek').disabled = isCurrentWeek;
+                document.getElementById('currentWeek').disabled = isCurrentWeek;
+            }
+
+            function isSameWeek(date1, date2) {
+                const firstDayOfWeek1 = new Date(date1);
+                firstDayOfWeek1.setDate(firstDayOfWeek1.getDate() - ((firstDayOfWeek1.getDay() + 1) % 7));
+
+                const firstDayOfWeek2 = new Date(date2);
+                firstDayOfWeek2.setDate(firstDayOfWeek2.getDate() - ((firstDayOfWeek2.getDay() + 1) % 7));
+
+                return firstDayOfWeek1.getTime() === firstDayOfWeek2.getTime();
+            }
+
+            document.getElementById('prevWeek').addEventListener('click', function () {
+                currentDate.setDate(currentDate.getDate() - 7);
+                updateTable(currentDate);
+            });
+
+            document.getElementById('currentWeek').addEventListener('click', function () {
+                currentDate = new Date(today);
+                updateTable(currentDate);
+            });
+
+            document.getElementById('nextWeek').addEventListener('click', function () {
+                currentDate.setDate(currentDate.getDate() + 7);
+                updateTable(currentDate);
+            });
+
+            updateTable(today); 
+        });
+
+
+
+    </script>
+
+
+
+  
+
+}

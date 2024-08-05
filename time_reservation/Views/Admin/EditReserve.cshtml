@@ -1,0 +1,62 @@
+﻿@model time_reservation.Models.AddTTimeViewModel
+
+@{
+    ViewData["Title"] = "EditReserve";
+}
+
+<h1>EditReserve</h1>
+
+<h4>AddTTimeViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditReserve" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="TTime.id" />
+
+            <div class="form-group">
+                <label asp-for="TTime.FullName">نام و نام خانوادگی</label>
+                <input type="text" class="form-control" asp-for="TTime.FullName" />
+                <span asp-validation-for="TTime.FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="selectBusiness" class="control-label">سالن</label>
+                <select id="selectBusiness" class="form-control custom-select" asp-for="SelectBusiness">
+                    @foreach (var item in Model.Admin.Businesses)
+                    {
+                        <option value="@item.id">@item.Name</option>
+                    }
+                </select>
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TTime.ReservationHour" class="control-label">ساعت رزرو</label>
+                <input asp-for="TTime.ReservationHour" type="time" class="form-control" />
+                <span asp-validation-for="TTime.ReservationHour" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TTime.ReservationDate" class="control-label">تاریخ رزرو</label>
+                <input asp-for="TTime.ReservationDate" type="date" class="form-control" />
+                <span asp-validation-for="TTime.ReservationDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TTime.IsPaymentCompleted" /> پرداخت شده
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="ویرایش" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

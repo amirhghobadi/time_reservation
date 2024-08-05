@@ -1,0 +1,184 @@
+﻿@using System.Security.Claims;
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] تایم با ما</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap-rtl.css" rel="stylesheet" />
+
+
+
+
+    <link rel="stylesheet" href="~/time_reservation.styles.css" asp-append-version="true" />
+</head>
+
+<style>
+    .card {
+        margin: 12px 2px;
+        text-decoration: none;
+        color: inherit;
+    }
+
+ 
+
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .card-description {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* number of lines to show */
+        -webkit-box-orient: vertical;
+    }
+
+    .city-name {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+    }
+
+        .city-name svg {
+             /* adjust space between icon and text */
+            width: 14px;
+            height: 14px;
+           
+        }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(45deg, #131313, #2f2f2f, #131313); /* گرادیانت پس‌زمینه */
+        color: #ffffff; /* رنگ متن سفید */
+        padding: 10px 15px;
+        border-top: 1px solid #444444;
+    }
+
+
+
+
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content {
+        flex: 1;
+    }
+
+    footer {
+        margin-top: auto;
+    }
+
+</style>
+
+<body class="container bg-dark text-light" dir="rtl" style="font-family:Vazir">
+    
+
+     <header>
+
+         @if (ViewBag.ShowNavbar != false)
+    {
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand mr-0" asp-controller="Home" asp-action="Index">تایم با ما</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">صفحه اصلی </a>
+                    </li>
+                  
+                    <li class="nav-item mx-2">
+                            <a class="nav-link" asp-controller="Home" asp-action="About">درباره ما</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                            <a class="nav-link" asp-controller="Home" asp-action="Contact">تماس با ما</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+
+             
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+
+                        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                        <a class="btn btn-primary text-light mr-2" asp-controller="Account" asp-action="EditMember" asp-route-id="@userId">
+                            <span class="city-name">
+
+                                <svg  xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-circle mx-1" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                                </svg>
+                               
+                                    @User.Identity.Name
+                               
+                            </span>
+                           
+                        </a>
+
+                        <a class="btn btn-outline-primary text-light" asp-controller="Account" asp-action="Logout">خروج</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-primary text-light mr-2" asp-controller="Account" asp-action="Login">ورود</a>
+                        <a class="btn btn-outline-primary text-light mr-2" asp-controller="Account" asp-action="Register">ثبت نام</a>
+                        <a class="btn btn-outline-primary text-light" asp-controller="Admin" asp-action="Index"> مجموعه ورزشی دارید؟</a>
+                    }
+
+                </form>
+            </div>
+        </nav>
+     }
+     </header>
+
+
+
+
+
+
+
+
+
+    <div class="content mt-5">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <div class="container">
+        <footer class="py-3 my-4">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item">   <a class="nav-link" asp-controller="Home" asp-action="Index">صفحه اصلی</a></li>
+                <li class="nav-item">   <a class="nav-link" asp-controller="Home" asp-action="About">درباره ما</a></li>
+                <li class="nav-item">   <a class="nav-link" asp-controller="Home" asp-action="Contact">تماس با ما</a></li>
+                
+            </ul>
+            <p class="text-center text-muted">© تمامی حقوق این سایت محفوظ می باشد.</p>
+        </footer>
+    </div>
+
+
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+  
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

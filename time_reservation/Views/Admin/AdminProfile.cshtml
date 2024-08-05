@@ -1,0 +1,539 @@
+﻿@using time_reservation.Helper
+
+
+@model time_reservation.Models.AdminProfileViewModel
+
+@{
+    ViewData["Title"] = "MemberProfile";
+    ViewBag.ShowNavbar = false;
+}
+
+
+
+
+@{
+    Func<TimeSpan, int, TimeSpan> CalculateEndTime = (TimeSpan startTime, int durationMinutes) =>
+    {
+        return startTime.Add(TimeSpan.FromMinutes(durationMinutes));
+
+    };
+}
+
+
+<style>
+
+   
+    .nav-tabs-vertical {
+        border-bottom: none;
+        border-right: 1px solid #dee2e6;
+    }
+
+        .nav-tabs-vertical .nav-link {
+            border: 1px solid transparent;
+            border-right: 0;
+            border-radius: 0.25rem 0 0 0.25rem;
+            padding: 0.5rem 1rem;  
+            font-size: 0.875rem;  
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+            .nav-tabs-vertical .nav-link.active {
+                border-color: #dee2e6 #dee2e6 #dee2e6 #fff;
+                background-color: #e9ecef;
+                color: #495057;
+            }
+
+            .nav-tabs-vertical .nav-link:hover {
+                background-color: #f8f9fa;
+                color: #007bff;
+                border-color: #dee2e6 #dee2e6 #dee2e6 #fff;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+
+    @@media (max-width: 767.98px) {
+        .nav-tabs-vertical {
+            border-right: none;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+            .nav-tabs-vertical .nav-link {
+                border-right: 1px solid #dee2e6;
+                border-radius: 0;
+                padding: 0.5rem 1rem;  
+                font-size: 0.875rem;  
+            }
+
+            .nav-tabs-vertical.collapse {
+                display: none;
+            }
+    }
+
+    /*  // */
+    .table-responsive {
+        overflow-x: auto;
+        max-height: 500px;  
+        direction: rtl;  
+    }
+
+        
+        .table-responsive::-webkit-scrollbar {
+            width: 8px;  
+            height: 10px;  
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background-color: #888; 
+            border-radius: 10px;  
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background-color: #333;  
+        }
+
+        .table-responsive::-webkit-scrollbar:vertical {
+            display: none;  
+        }
+
+    .table {
+        width: 100%;
+        min-width: 800px;  
+        border-collapse: separate;
+        border-spacing: 0;
+        direction: rtl;  
+        background-color: #1e1e1e;  
+        color: #ddd;  
+    }
+
+        .table th, .table td {
+            white-space: nowrap;
+           
+            text-align: right;  
+         vertical-align:middle;
+        
+        }
+
+    thead th {
+        position: sticky;  
+        top: 0;
+        background-color: #333;  
+        color: #fff;  
+        z-index: 2;  
+        border-bottom: 2px solid #555;  
+    }
+
+  
+    .table tbody tr:nth-child(odd) {
+        background-color: #464c52;  
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #343a40;  
+    }
+
+    .table tbody tr.selected {
+        background-color: #fcdb00;  
+        color: #000; 
+    }
+
+  
+
+
+</style>
+
+
+
+
+
+<div class="row my-4">
+    <div class="col-md-3 col-12 my-4">
+        <ul class="nav nav-tabs nav-tabs-vertical flex-md-column" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true"> مشخصات</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">تغییر کلمه عبور </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab3-tab" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false"> لیست رزرو ها  </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab4-tab" data-toggle="tab" href="#tab4" role="tab" aria-controls="tab4" aria-selected="false">مجموعه ی ورزشی من</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Admin" asp-action="Logout">خروج</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="col-md-9 col-12">
+        <div class="tab-content" id="myTabContent">
+
+
+            <div id="error-message" class="text-danger my-3" style="display: none;">
+                <div asp-validation-summary="ModelOnly"></div>
+            </div>
+
+
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+
+
+
+
+
+
+
+                <h4 class="mb-4">ویرایش پروفایل</h4>
+                <form asp-action="EditAdmin" method="post">
+                   
+                    <input type="hidden" asp-for="@Model.Admin.id" />
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.Admin.FullName">نام و نام خانوادگی</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" asp-for="@Model.Admin.FullName" />
+                            <span asp-validation-for="@Model.Admin.FullName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.Admin.NationalCode">کد ملی</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" asp-for="@Model.Admin.NationalCode" />
+                            <span asp-validation-for="@Model.Admin.NationalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.Admin.Email">ایمیل</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control" asp-for="@Model.Admin.Email" />
+                            <span asp-validation-for="@Model.Admin.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.Admin.Phone">تلفن</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" asp-for="@Model.Admin.Phone" />
+                            <span asp-validation-for="@Model.Admin.Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-8 offset-sm-4">
+                            <button type="submit" class="btn btn-primary">ویرایش</button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+
+
+
+            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+
+
+                <h4 class="mb-4">ویرایش  کلمه عبور</h4>
+
+                <form asp-action="ChangePassword" method="post">
+                    <input type="hidden" asp-for="@Model.ChangePasswordViewModel.id" />
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.ChangePasswordViewModel.CurrentPassword"></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" asp-for="@Model.ChangePasswordViewModel.CurrentPassword" />
+                            <span asp-validation-for="@Model.ChangePasswordViewModel.CurrentPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="@Model.ChangePasswordViewModel.NewPassword">  </label>
+                        <div class="col-sm-8">
+                            <input asp-for="@Model.ChangePasswordViewModel.NewPassword" type="password" class="form-control" />
+                            <span asp-validation-for="@Model.ChangePasswordViewModel.NewPassword" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" asp-for="ChangePasswordViewModel.ConfirmNewPassword">   </label>
+                        <div class="col-sm-8">
+                            <input asp-for="ChangePasswordViewModel.ConfirmNewPassword" type="password" class="form-control" />
+                            <span asp-validation-for="ChangePasswordViewModel.ConfirmNewPassword" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">تغییر کلمه عبور</button>
+                </form>
+
+
+
+
+
+            </div>
+
+            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+
+
+                <h4>رزروهای انجام شده برای مجموعه ی ورزشی من</h4>
+                @if (Model.Admin.TTime != null && Model.Admin.TTime.Count > 0)
+                {
+
+                    <div class="table-responsive mt-5 ">
+                        <table class="table text-light">
+                            <thead >
+                                <tr>
+                                    <th>سالن</th>
+                                    <th>شخص رزرو کننده</th>
+                                    <th>آدرس</th>
+                                    <th>ساعت</th>
+                                  
+                                    <th>تاریخ</th>
+                                    <th>وضعیت پرداخت</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                              
+                            </thead>
+                            <tbody>
+                                @foreach (var reservation in Model.Admin.TTime)
+                                {
+                                    <tr class="my-4">
+                                       
+                                        <td>@reservation.BusinessName</td>
+                                        <td>@reservation.FullName</td>
+
+                                        <td>@reservation.BusinessAddress</td>
+                                        <td>
+                                            @reservation.ReservationHour.ToString(@"hh\:mm")
+                                            تا
+                                            @CalculateEndTime(reservation.ReservationHour, reservation.Business.TimeUnit).ToString(@"hh\:mm")
+
+                                        </td>
+                                        
+                                        <td>@PersianDateHelper.ToPersianDateString(reservation.ReservationDate)</td>
+                                        <td>@(reservation.IsPaymentCompleted ? "پرداخت شده" : "در انتظار پرداخت")</td>
+                                        <td>
+                                            <a class="btn btn-primary text-light mr-2" asp-controller="Admin" asp-action="EditReserve" asp-route-id="@reservation.id">ویرایش </a>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-danger text-light mr-2" asp-controller="Admin" asp-action="DeleteReserve" asp-route-id="@reservation.id">حذف </a>
+                                        </td>
+                                    </tr>
+                                  
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="btn btn-success text-light mr-2 my-5 w-25" asp-controller="Admin" asp-action="AddReserve" asp-route-id="@Model.Admin.id">افزودن </a>
+                }
+                else
+                {
+                    <p>رزروی انجام نشده است.</p>
+                    <a class="btn btn-success text-light mr-2 my-5 w-25" asp-controller="Admin" asp-action="AddReserve" asp-route-id="@Model.Admin.id">افزودن </a>
+                }
+
+
+
+
+            </div>
+
+
+
+            <div class="tab-pane fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
+
+
+                <h4> مجموعه ی ورزشی من</h4>
+               
+
+                @if (Model.Admin.Businesses != null && Model.Admin.Businesses.Count > 0)
+                {
+                    
+                    <div class="table-responsive my-4">
+                        <table class="table text-light">
+                            <thead>
+                                <tr>
+                                    <th>عکس</th>
+                                    <th>اسم مجموعه</th>
+
+                                    <th>توضیحات</th>
+
+                                    <th>امکانات</th>
+                                    <th>جنسیت</th>
+                                    <th>استان</th>
+                                    <th>شهر</th>
+                                    <th>آدرس</th>
+                                     <th>(دقیقه) تایم هر سانس</th>
+                                    <th>زمان شروع</th>
+                                    <th>زمان پایان</th>
+                                    <th>قیمت</th>
+                                    <th>وضعیت</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Admin.Businesses)
+                                {
+                                    <tr>
+                                        <td>
+ 
+                                    <img src="@Url.Content($"~/images/admins/{Model.Admin.id}/{item.Name}/{item.PictureFileName}")" alt="Business Image" style="width: 100px; height: 100px;object-fit:cover;border-radius:5px" />
+
+
+
+
+                                        </td>
+
+
+
+                                        <td>
+                                            @item.Name
+                                        </td>
+                                        <td>
+                                            @item.Description
+                                        </td>
+                                          <td>
+                                              @item.Possibilities
+                                          </td>
+                                        <td>
+                                            @item.Gender
+                                        </td>
+                                         <td>
+                                             @item.City
+                                         </td>
+                                          <td>
+                                              @item.SubCity
+                                          </td>
+                                           <td>
+                                               @item.Address
+                                           </td>
+                                            <td>
+                                                @item.TimeUnit
+                                                
+                                            </td>
+                                             <td>
+                                            @item.StartTime.ToString(@"hh\:mm")
+                                             </td>
+                                              <td>
+                                                  @item.EndTime.ToString(@"hh\:mm")
+                                              </td>
+
+                                        @{
+                                            int? p = (int?)@item.Price;
+                                        }
+                                               <td>@p</td>
+
+                                        <td>@(item.State ? "فعال" : "غیر فعال")</td>
+                                        <td>
+                                            <a class="btn btn-primary text-light mr-2" asp-controller="Admin" asp-action="EditBusiness" asp-route-id="@item.id">ویرایش </a>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-danger text-light mr-2" asp-controller="Admin" asp-action="DeleteBusiness" asp-route-id="@item.id">حذف </a>
+                                        </td>
+                                   
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="btn btn-success text-light mr-2 my-5 w-25" asp-controller="Admin" asp-action="CreateBusiness" asp-route-id="@Model.Admin.id" >افزودن </a>
+                }
+                else
+                {
+                    <p>شما مجموعه ی ورزشی خود را ثبت نکرده اید!!!</p>
+                    <a class="btn btn-success text-light mr-2 my-5 w-25" asp-controller="Admin" asp-action="CreateBusiness" asp-route-id="@Model.Admin.id">افزودن </a>
+                }
+
+            </div>
+
+
+        
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+       
+        const tables = document.querySelectorAll('.table');
+
+        tables.forEach(table => {
+            table.addEventListener('click', function (e) {
+                const rows = table.querySelectorAll('tbody tr');
+
+                rows.forEach(row => row.classList.remove('selected'));  
+
+                if (e.target.closest('tr')) {
+                    e.target.closest('tr').classList.add('selected'); 
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var errorMessageDiv = document.getElementById("error-message");
+        var hideTimeout;
+
+      
+        errorMessageDiv.style.border = "1px solid white";
+        errorMessageDiv.style.textAlign = "center";
+        errorMessageDiv.style.padding = "8px";
+        errorMessageDiv.style.borderRadius = "8px";
+        errorMessageDiv.style.backgroundColor = "#eee";
+        errorMessageDiv.style.position = "relative";
+        errorMessageDiv.style.overflow = "hidden";
+
+        if (errorMessageDiv && errorMessageDiv.innerHTML.trim() !== "") {
+            errorMessageDiv.style.display = "block";  
+
+         
+            var timelineDiv = document.createElement("div");
+            timelineDiv.id = "timeline";
+            timelineDiv.style.height = "5px";
+            timelineDiv.style.backgroundColor = "red";
+            timelineDiv.style.position = "absolute";
+            timelineDiv.style.bottom = "0";
+            timelineDiv.style.left = "0";
+            timelineDiv.style.width = "100%";
+            timelineDiv.style.animation = "timeline-animation 5s linear forwards";
+            errorMessageDiv.appendChild(timelineDiv);
+ 
+            var styleSheet = document.createElement("style");
+            styleSheet.type = "text/css";
+            styleSheet.innerText = `
+    @@keyframes timeline-animation {
+                            from { width: 100%; }
+                            to { width: 0; }
+                        }
+                    `;
+            document.head.appendChild(styleSheet);
+
+            function startHideTimeout() {
+                hideTimeout = setTimeout(function () {
+                    errorMessageDiv.style.display = "none";
+                }, 5000);
+            }
+
+            function stopHideTimeout() {
+                clearTimeout(hideTimeout);
+            }
+
+            startHideTimeout();
+
+            errorMessageDiv.addEventListener("mouseover", function () {
+                stopHideTimeout();
+                timelineDiv.style.animationPlayState = "paused";
+            });
+
+            errorMessageDiv.addEventListener("mouseout", function () {
+                startHideTimeout();
+                timelineDiv.style.animationPlayState = "running";
+            });
+        }
+    });
+</script>

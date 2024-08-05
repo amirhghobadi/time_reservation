@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "time_reservation", "time_reservation\time_reservation.csproj", "{B66D206F-7DFC-4143-816C-F2428A332A8B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B66D206F-7DFC-4143-816C-F2428A332A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B66D206F-7DFC-4143-816C-F2428A332A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B66D206F-7DFC-4143-816C-F2428A332A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B66D206F-7DFC-4143-816C-F2428A332A8B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7F1B0C5-8D96-481C-AF25-0F84A26F2AA8}
+	EndGlobalSection
+EndGlobal
